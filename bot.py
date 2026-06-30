@@ -9,7 +9,7 @@ from telegram.ext import (
 
 import os
 
-BOT_TOKEN = os.getenv("8811406011:AAERC5U00L1A307pW4q-F1xZueHhlPt3wPU")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 # Hozircha bo'sh
 ANIME_CODES = {}
 
