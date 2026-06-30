@@ -10,8 +10,10 @@ from telegram.ext import (
 import os
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-# Hozircha bo'sh
+ADMIN_ID = 7626487549
+
 ANIME_CODES = {}
+waiting_for_video = {}
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
