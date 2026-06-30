@@ -14,7 +14,22 @@ ADMIN_ID = 7626487549
 
 ANIME_CODES = {}
 waiting_for_video = {}
+async def add(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        await update.message.reply_text("❌ Siz admin emassiz.")
+        return
 
+    if len(context.args) != 1:
+        await update.message.reply_text("Foydalanish: /add A001")
+        return
+
+    code = context.args[0].upper()
+    waiting_for_video[update.effective_user.id] = code
+    ANIME_CODES[code] = []
+
+    await update.message.reply_text(
+        f"✅ {code} yaratildi.\n\nEndi videolarni bittalab yuboring.\nTugatgach /done yozing."
+    )
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🎌 Animelar Olami botiga xush kelibsiz!\n\n"
