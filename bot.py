@@ -35,7 +35,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🎌 Animelar Olami botiga xush kelibsiz!\n\n"
         "📥 Iltimos, qidirayotgan animengizning kodini kiriting."
     )
+async def save_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user.id != ADMIN_ID:
+        return
 
+    if update.effective_user.id not in waiting_for_video:
+        return
+
+    code = waiting_for_video[update.effective_user.id]
+    file_id = update.message.video.file_id
+
+    ANIME_CODES[code].append(file_id)
+
+    await update.message.reply_text(f"✅ Video saqlandi. Jami: {len(ANIME_CODES[code])} ta.")
 async def search(update: Update, context: ContextTypes.DEFAULT_TYPE):
     code = update.message.text.upper()
 
