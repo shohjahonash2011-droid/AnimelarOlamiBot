@@ -57,18 +57,29 @@ async def save_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id not in waiting_for_video:
         return
 
-    if not update.message.video:
+    file_id = None
+
+    # Video bo'lsa
+    if update.message.video:
+        file_id = update.message.video.file_id
+
+    # Fayl (Document) bo'lsa va video bo'lsa
+    elif update.message.document:
+        if update.message.document.mime_type and update.message.document.mime_type.startswith("video/"):
+            file_id = update.message.document.file_id
+        else:
+            await update.message.reply_text("❌ Bu video fayl emas.")
+            return
+
+    else:
         return
 
     code = waiting_for_video[user_id]
-    file_id = update.message.video.file_id
-
     ANIME_CODES[code].append(file_id)
 
     await update.message.reply_text(
-        f"✅ Qism qo‘shildi. Jami: {len(ANIME_CODES[code])}"
+        f"✅ Video qo'shildi. Jami: {len(ANIME_CODES[code])} ta."
     )
-
 
 # DONE (FINISH ADDING)
 async def done(update: Update, context: ContextTypes.DEFAULT_TYPE):
