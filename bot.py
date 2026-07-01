@@ -7,7 +7,7 @@ from telegram.ext import (
     filters,
 )
 import os
-
+import json
 # ==========================
 # TOKEN
 # ==========================
@@ -23,7 +23,19 @@ ADMIN_ID = 7626487549
 # ==========================
 ANIME_CODES = {}
 waiting_for_video = {}
+DATA_FILE = "anime_data.json"
 
+def load_data():
+    global ANIME_CODES
+    try:
+        with open(DATA_FILE, "r") as f:
+            ANIME_CODES = json.load(f)
+    except:
+        ANIME_CODES = {}
+
+def save_data():
+    with open(DATA_FILE, "w") as f:
+        json.dump(ANIME_CODES, f, indent=4)
 # ==========================
 # START
 # ==========================
@@ -91,7 +103,7 @@ async def save_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     code = waiting_for_video[user_id]
     ANIME_CODES[code].append(file_id)
-
+save_data()
     await update.message.reply_text(
         f"✅ Video saqlandi.\n📺 Jami: {len(ANIME_CODES[code])} ta."
     )
@@ -134,6 +146,7 @@ async def search(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ==========================
 # APP
 # ==========================
+load_data()
 app = Application.builder().token(BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
