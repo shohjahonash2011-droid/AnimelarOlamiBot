@@ -99,15 +99,15 @@ async def save_video(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
     if file_id is None:
-    return
+        return
 
-code = waiting_for_video[user_id]
-ANIME_CODES[code].append(file_id)
-save_data()
+    code = waiting_for_video[user_id]
+    ANIME_CODES[code].append(file_id)
+    save_data()
 
-await update.message.reply_text(
-    f"✅ Video saqlandi.\n📺 Jami: {len(ANIME_CODES[code])} ta."
-        )
+    await update.message.reply_text(
+        f"✅ Video saqlandi.\n📺 Jami: {len(ANIME_CODES[code])} ta."
+    )
 
 # ==========================
 # DONE
